@@ -3,7 +3,7 @@
     import { ref, watch } from "vue"
 
     const client = axios.create({
-        baseURL: "http://127.0.0.1:8000",
+        baseURL: import.meta.env.VITE_BACKEND_URL,
     })
 
     const messages = ref([])
@@ -12,15 +12,12 @@
 
     async function loadMessages() {
         try {
-            let result = await client.get("/get_messages", {
-                params: { page: page.value },
-            })
+            let result = await client.get("/get_messages", { params: { page: page.value } })
             if (page.value === 1) {
-                messages.value = result.data
-            } else {
-                messages.value.push(...result.data)
+                messages.value = []
             }
-            haveNextPage.value = result.data.length == 20
+            messages.value.push(...result.data.messages)
+            haveNextPage.value = result.data.have_next_page
         } catch (error) {
             alert("加载失败")
         }
@@ -40,6 +37,7 @@
             alert("发送失败")
         }
     }
+    console.log()
 </script>
 
 <template>
