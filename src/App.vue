@@ -37,7 +37,6 @@
             alert("发送失败")
         }
     }
-    console.log()
 </script>
 
 <template>
