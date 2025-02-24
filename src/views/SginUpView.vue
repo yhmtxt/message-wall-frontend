@@ -1,0 +1,55 @@
+<script setup>
+    import axiosIns from "@/axios"
+    import { ref } from "vue"
+    import { useRouter } from "vue-router"
+
+    import FormArea from "@/components/FormArea.vue"
+    import InputBox from "@/components/InputBox.vue"
+    import Button from "@/components/Button.vue"
+
+    const router = useRouter()
+
+    const name = ref("")
+    const password = ref("")
+    async function signUp() {
+        try {
+            await axiosIns.post("/sign_up", {
+                name: name.value,
+                password: password.value,
+            })
+            alert("注册成功，即将跳转到登录页面")
+            router.push({ name: "signIn" })
+        } catch (error) {
+            alert("注册失败，请稍后再试")
+        }
+    }
+</script>
+
+<template>
+    <FormArea>
+        <div class="item">
+            <h1>注册</h1>
+        </div>
+        <div class="item">
+            <h2>用户名</h2>
+            <InputBox v-model="name" placeholder="请输入用户名" />
+        </div>
+        <div class="item">
+            <h2>密码</h2>
+            <InputBox type="password" v-model="password" placeholder="请输入密码" />
+        </div>
+        <div class="item">
+            <Button value="注册" @click="signUp()" />
+        </div>
+    </FormArea>
+</template>
+
+<style>
+    .item h1 {
+        margin: 0;
+        text-align: center;
+    }
+    .item h2 {
+        margin: 10px 0px;
+    }
+</style>

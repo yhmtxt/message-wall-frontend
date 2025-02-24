@@ -1,110 +1,57 @@
 <script setup>
-    import axios from "axios"
-    import { ref, watch } from "vue"
+    import { RouterView, RouterLink } from "vue-router"
 
-    const client = axios.create({
-        baseURL: import.meta.env.VITE_BACKEND_URL,
-    })
+    import useUserStore from "./stores/user"
+    import Button from "./components/Button.vue"
 
-    const messages = ref([])
-    const page = ref(1)
-    const haveNextPage = ref(false)
-
-    async function loadMessages() {
-        try {
-            let result = await client.get("/get_messages", { params: { page: page.value } })
-            if (page.value === 1) {
-                messages.value = []
-            }
-            messages.value.push(...result.data.messages)
-            haveNextPage.value = result.data.have_next_page
-        } catch (error) {
-            alert("加载失败")
-        }
-    }
-
-    watch(page, loadMessages, { immediate: true })
-
-    const message = ref("")
-
-    async function postMessage() {
-        try {
-            await client.post("/post_message", message.value)
-            page.value = 1
-            message.value = ""
-            await loadMessages()
-        } catch (error) {
-            alert("发送失败")
-        }
-    }
+    const user = useUserStore()
 </script>
 
 <template>
-    <h1 class="title">留言墙</h1>
-    <div id="messages">
-        <div class="message" v-for="message in messages">
-            {{ message.content }}
+    <div id="navbar">
+        <RouterLink :to="{ name: 'home' }">
+            <h1>留言墙</h1>
+        </RouterLink>
+        <div class="button-area" v-if="!user.token">
+            <RouterLink :to="{ name: 'signIn' }">
+                <Button value="登录" />
+            </RouterLink>
+            <RouterLink :to="{ name: 'signUp' }">
+                <Button value="注册" />
+            </RouterLink>
         </div>
     </div>
-    <div id="more" class="button" @click="page++" v-show="haveNextPage">更多</div>
-    <div id="inputArea">
-        <textarea v-model="message"></textarea>
-        <div class="button" @click="postMessage">发表留言</div>
+    <div id="main">
+        <RouterView />
     </div>
 </template>
 
 <style scoped>
-    .title {
+    #navbar {
+        position: fixed;
+        top: 0px;
+        background-color: #2196f3;
+        color: white;
         width: 100%;
+        height: 60px;
+        line-height: 60px;
         text-align: center;
+        box-shadow: 0px 0px 10px #003366;
+        z-index: 100;
     }
-    #messages {
-        display: grid;
-        width: 95%;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        grid-auto-rows: minmax(125px, auto);
-        gap: 20px;
-        margin: 20px auto;
+    #navbar h1 {
+        font-size: 30px;
+        margin: 0;
     }
-    .message {
-        padding: 10px;
-        border: 1px solid black;
-        border-radius: 8px;
-        overflow-wrap: break-word;
-    }
-    #more {
-        background-color: lightgrey;
-        width: 100%;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-    }
-    #more:active {
-        background-color: grey;
-    }
-    #inputArea {
+    #navbar .button-area {
         display: flex;
-        background-color: lightgrey;
-        width: 70%;
-        padding: 30px 0px;
-        border-radius: 8px;
-        margin: 20px auto;
-        flex-direction: column;
+        gap: 15px;
         align-items: center;
-        gap: 20px;
+        position: absolute;
+        top: 0px;
+        right: 15px;
     }
-    #inputArea textarea {
-        width: 90%;
-        height: 300px;
-        border: 1px solid grey;
-        border-radius: 8px;
-    }
-    #inputArea .button {
-        background-color: white;
-        width: 90%;
-        height: 50px;
-        line-height: 50px;
-        border: 1px solid grey;
-        border-radius: 8px;
+    #main {
+        margin-top: 80px;
     }
 </style>
