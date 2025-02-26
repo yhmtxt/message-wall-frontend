@@ -5,6 +5,8 @@
     import Button from "./components/Button.vue"
 
     const user = useUserStore()
+
+    user.loadToken()
 </script>
 
 <template>
@@ -12,13 +14,23 @@
         <RouterLink :to="{ name: 'home' }">
             <h1>留言墙</h1>
         </RouterLink>
-        <div class="button-area" v-if="!user.token">
-            <RouterLink :to="{ name: 'signIn' }">
-                <Button value="登录" />
-            </RouterLink>
-            <RouterLink :to="{ name: 'signUp' }">
-                <Button value="注册" />
-            </RouterLink>
+        <div class="button-area">
+            <template v-if="!user.token">
+                <RouterLink :to="{ name: 'signIn' }">
+                    <Button value="登录" />
+                </RouterLink>
+                <RouterLink :to="{ name: 'signUp' }">
+                    <Button value="注册" />
+                </RouterLink>
+            </template>
+            <template v-else>
+                <RouterLink :to="{ name: 'user', params: { id: user.info.id } }">
+                    <Button :value="user.info.name" />
+                </RouterLink>
+                <RouterLink :to="{ name: 'leaveMessage' }">
+                    <Button value="发表留言" />
+                </RouterLink>
+            </template>
         </div>
     </div>
     <div id="main">
@@ -50,6 +62,7 @@
         position: absolute;
         top: 0px;
         right: 15px;
+        height: 100%;
     }
     #main {
         margin-top: 80px;

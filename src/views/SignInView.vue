@@ -21,7 +21,7 @@
         formData.append("password", password.value)
         try {
             let response = await axiosIns.post("/sign_in", formData)
-            user.token = response.data.access_token
+            user.setToken(response.data.access_token)
             alert("登录成功，即将跳转到首页")
             router.push({ name: "home" })
         } catch (error) {

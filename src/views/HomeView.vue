@@ -51,6 +51,7 @@
     <div id="messages">
         <Message
             v-for="message in messages"
+            :user-id="message.user_id"
             :user-name="message.user_name"
             :time-stamp="message.time_stamp"
             :content="message.content"

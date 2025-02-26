@@ -1,9 +1,8 @@
 import axios from "axios"
-import { createPinia } from "pinia"
 
+import pinia from "./stores"
 import useUserStore from "./stores/user"
 
-const pinia = createPinia()
 const user = useUserStore(pinia)
 
 const axiosIns = axios.create({

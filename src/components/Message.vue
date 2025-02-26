@@ -1,7 +1,9 @@
 <script setup>
     import { computed } from "vue"
+    import { RouterLink } from "vue-router"
 
     const props = defineProps({
+        userId: String,
         userName: String,
         timeStamp: Number,
         content: String,
@@ -22,7 +24,9 @@
 
 <template>
     <div class="message">
-        <div class="user-name">{{ userName }}</div>
+        <div class="user-name">
+            <RouterLink :to="{ name: 'user', params: { id: userId } }">{{ userName }}</RouterLink>
+        </div>
         {{ content }}
         <div class="time">{{ localTime }}</div>
     </div>
@@ -37,6 +41,7 @@
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         overflow-wrap: break-word;
+        box-sizing: border-box;
     }
     .message .user-name {
         font-size: 20px;
