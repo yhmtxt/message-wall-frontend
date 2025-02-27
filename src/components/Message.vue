@@ -27,17 +27,21 @@
         <div class="user-name">
             <RouterLink :to="{ name: 'user', params: { id: userId } }">{{ userName }}</RouterLink>
         </div>
-        {{ content }}
+        <div class="content">
+            {{ content }}
+        </div>
         <div class="time">{{ localTime }}</div>
     </div>
 </template>
 
 <style>
     .message {
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: space-between;
         background-color: #e0f7fa;
         padding: 10px;
-        padding-bottom: 40px;
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         overflow-wrap: break-word;
@@ -45,11 +49,13 @@
     }
     .message .user-name {
         font-size: 20px;
-        color: #2e7d32;
+        color: #2196f3;
+    }
+    .message .content {
+        flex: 1;
     }
     .message .time {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
+        font-size: 12px;
+        color: #666;
     }
 </style>

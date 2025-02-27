@@ -14,7 +14,7 @@
             let response = await axiosIns.get(`/users/${route.params.id}`)
             userInfo.value = response.data
         } catch (error) {
-            alert("")
+            alert("获取用户失败")
         }
     }
 

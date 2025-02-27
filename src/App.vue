@@ -25,7 +25,7 @@
             </template>
             <template v-else>
                 <RouterLink :to="{ name: 'user', params: { id: user.info.id } }">
-                    <Button :value="user.info.name" />
+                    <Button :value="user.info.name" class="user-name" />
                 </RouterLink>
                 <RouterLink :to="{ name: 'leaveMessage' }">
                     <Button value="发表留言" />
@@ -63,6 +63,16 @@
         top: 0px;
         right: 15px;
         height: 100%;
+    }
+    #navbar .button-area .user-name {
+        background-color: inherit;
+        color: inherit;
+        border: 2px solid white;
+        box-sizing: border-box;
+    }
+    #navbar .button-area .user-name:hover {
+        background-color: white;
+        color: #2196f3;
     }
     #main {
         margin-top: 80px;
