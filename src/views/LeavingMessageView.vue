@@ -10,11 +10,7 @@
 
     async function leaveMessage() {
         try {
-            await axiosIns.post("/messages", content.value, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
+            await axiosIns.post("/messages", { content: content.value })
             content.value = ""
             alert("发送成功")
         } catch (error) {
