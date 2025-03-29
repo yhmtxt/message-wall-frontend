@@ -6,7 +6,7 @@ import useUserStore from "./stores/user"
 const user = useUserStore(pinia)
 
 const axiosIns = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: import.meta.env.VITE_APP_BACKEND_URL,
 })
 
 axiosIns.interceptors.request.use(config => {
