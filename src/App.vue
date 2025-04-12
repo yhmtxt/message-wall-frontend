@@ -86,7 +86,7 @@
                 <RouterLink :to="{ name: 'user', params: { id: user.info.id } }">
                     <Button :value="user.info.name" class="user-name" />
                 </RouterLink>
-                <Button value="发表留言" @click="showLeavingMessagePopup()" />
+                <Button value="留言" @click="showLeavingMessagePopup()" />
             </template>
         </div>
     </div>
@@ -96,6 +96,10 @@
 </template>
 
 <style scoped>
+    #leave-message-popup h1 {
+        margin: 0;
+        text-align: center;
+    }
     #leave-message-popup .button-area {
         display: flex;
         gap: 10px;

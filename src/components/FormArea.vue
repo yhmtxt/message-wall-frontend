@@ -1,11 +1,11 @@
 <template>
-    <div id="form-area">
+    <div class="form-area">
         <slot></slot>
     </div>
 </template>
 
 <style>
-    #form-area {
+    .form-area {
         display: flex;
         flex-direction: column;
         gap: 30px;
