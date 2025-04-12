@@ -20,13 +20,17 @@
             alert("注册成功，即将跳转到登录页面")
             router.push({ name: "signIn" })
         } catch (error) {
-            alert("注册失败，请稍后再试")
+            if (error.status === 409) {
+                alert("用户名已存在")
+            } else {
+                alert("注册失败，请稍后再试")
+            }
         }
     }
 </script>
 
 <template>
-    <FormArea>
+    <FormArea id="sign-up-area">
         <div class="item">
             <h1>注册</h1>
         </div>
@@ -45,11 +49,11 @@
 </template>
 
 <style>
-    .item h1 {
+    #sign-up-area .item h1 {
         margin: 0;
         text-align: center;
     }
-    .item h2 {
+    #sign-up-area .item h2 {
         margin: 10px 0px;
     }
 </style>

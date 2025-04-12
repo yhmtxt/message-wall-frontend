@@ -1,8 +1,8 @@
 <script setup>
-    import axiosIns from "@/axios"
     import { ref } from "vue"
     import { useRouter } from "vue-router"
 
+    import axiosIns from "@/axios"
     import useUserStore from "@/stores/user"
     import FormArea from "@/components/FormArea.vue"
     import InputBox from "@/components/InputBox.vue"
@@ -31,7 +31,7 @@
 </script>
 
 <template>
-    <FormArea>
+    <FormArea id="sign-in-area">
         <div class="item">
             <h1>登录</h1>
         </div>
@@ -50,11 +50,11 @@
 </template>
 
 <style>
-    .item h1 {
+    #sign-in-area .item h1 {
         margin: 0;
         text-align: center;
     }
-    .item h2 {
+    #sign-in-area .item h2 {
         margin: 10px 0px;
     }
 </style>
