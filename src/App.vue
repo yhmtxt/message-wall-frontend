@@ -1,15 +1,74 @@
 <script setup>
+    import { ref } from "vue"
     import { RouterView, RouterLink } from "vue-router"
 
+    import axiosIns from "@/axios"
     import useUserStore from "./stores/user"
+    import Mask from "./components/Mask.vue"
+    import PopupArea from "./components/PopupArea.vue"
+    import FormArea from "./components/FormArea.vue"
+    import MultiLineInputBox from "@/components/MultiLineInputBox.vue"
     import Button from "./components/Button.vue"
 
     const user = useUserStore()
 
     user.loadToken()
+
+    const isLeavingMessagePopupDisplayed = ref(false)
+
+    function showLeavingMessagePopup() {
+        isLeavingMessagePopupDisplayed.value = true
+    }
+
+    function hideLeavingMessagePopup() {
+        isLeavingMessagePopupDisplayed.value = false
+    }
+
+    const content = ref("")
+
+    async function leaveMessage() {
+        try {
+            await axiosIns.post("/messages", { content: content.value })
+            content.value = ""
+            alert("发送成功")
+            hideLeavingMessagePopup()
+        } catch (error) {
+            if (error.status === 401) {
+                if (user.token === null) {
+                    alert("请先登录")
+                    router.push({ name: "signIn" })
+                } else {
+                    alert("登录失效，请重新登录")
+                    user.clearToken()
+                    router.push({ name: "signIn" })
+                }
+            } else {
+                alert("发送失败，请稍后再试")
+            }
+        }
+    }
 </script>
 
 <template>
+    <Mask />
+    <PopupArea
+        id="leave-message-popup"
+        style="margin-top: 20px"
+        :display="isLeavingMessagePopupDisplayed"
+    >
+        <FormArea>
+            <div class="item">
+                <h1>留言</h1>
+            </div>
+            <div class="item">
+                <MultiLineInputBox v-model="content" style="height: 200px" />
+            </div>
+            <div class="item button-area">
+                <Button value="发送" @click="leaveMessage()" />
+                <Button value="取消" @click="hideLeavingMessagePopup()" />
+            </div>
+        </FormArea>
+    </PopupArea>
     <div id="navbar">
         <RouterLink :to="{ name: 'home' }">
             <h1>留言墙</h1>
@@ -27,9 +86,7 @@
                 <RouterLink :to="{ name: 'user', params: { id: user.info.id } }">
                     <Button :value="user.info.name" class="user-name" />
                 </RouterLink>
-                <RouterLink :to="{ name: 'leaveMessage' }">
-                    <Button value="发表留言" />
-                </RouterLink>
+                <Button value="发表留言" @click="showLeavingMessagePopup()" />
             </template>
         </div>
     </div>
@@ -39,6 +96,10 @@
 </template>
 
 <style scoped>
+    #leave-message-popup .button-area {
+        display: flex;
+        gap: 10px;
+    }
     #navbar {
         position: fixed;
         top: 0px;
