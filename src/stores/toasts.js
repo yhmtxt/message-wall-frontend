@@ -12,20 +12,20 @@ const useToastsStore = defineStore("toasts", () => {
 
     var lastId = 0
 
-    function add(content, level = this.Level.INFO) {
+    function add(content, level = Level.INFO) {
         let id = ++lastId
-        this.toastQueue.push({ id: id, content: content, level: level })
+        toastQueue.value.push({ id: id, content: content, level: level })
         setTimeout(() => {
-            this.remove(id)
+            remove(id)
         }, 1000)
     }
 
     function remove(id) {
-        this.toastQueue = this.toastQueue.filter(toast => toast.id !== id)
+        toastQueue.value = toastQueue.value.filter(toast => toast.id !== id)
     }
 
     function clear() {
-        this.toastQueue = []
+        toastQueue.value = []
     }
 
     return { Level, toastQueue, add, remove, clear }

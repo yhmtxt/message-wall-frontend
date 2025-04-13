@@ -14,32 +14,33 @@ const useUserStore = defineStore("user", () => {
                 exp: playload.exp || null,
             }
         } catch (error) {
-            return null
+            return {
+                id: null,
+                name: null,
+                exp: null,
+            }
         }
     })
 
     function $reset() {
-        this.token = null
+        token.value = null
     }
     function loadToken() {
-        let token = localStorage.getItem("token")
-        if (token !== null) {
-            this.token = token
+        let localToken = localStorage.getItem("token")
+        if (localToken !== null) {
+            token.value = localToken
         }
     }
-    function setToken(token) {
-        this.token = token
-        localStorage.setItem("token", token)
+    function setToken(newToken) {
+        token.value = newToken
+        localStorage.setItem("token", token.value)
     }
     function clearToken() {
-        this.$reset()
+        $reset()
         localStorage.removeItem("token")
     }
-    function checkToken() {
-        return this.info.exp * 1000 > new Date().getTime()
-    }
 
-    return { token, info, $reset, loadToken, setToken, clearToken, checkToken }
+    return { token, info, $reset, loadToken, setToken, clearToken }
 })
 
 export default useUserStore

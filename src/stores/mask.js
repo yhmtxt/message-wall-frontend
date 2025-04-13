@@ -4,10 +4,10 @@ import { defineStore } from "pinia"
 const useMaskStore = defineStore("mask", () => {
     const isDisplayed = ref(false)
     function show() {
-        this.isDisplayed = true
+        isDisplayed.value = true
     }
     function hide() {
-        this.isDisplayed = false
+        isDisplayed.value = false
     }
     return { isDisplayed, show, hide }
 })
