@@ -2,6 +2,7 @@
     import { ref } from "vue"
     import { useRouter, useRoute } from "vue-router"
 
+    import useToastsStore from "@/stores/toasts"
     import useUserStore from "@/stores/user"
     import axiosIns from "@/axios"
     import Message from "@/components/Message.vue"
@@ -10,6 +11,7 @@
     const router = useRouter()
     const route = useRoute()
 
+    const toasts = useToastsStore()
     const user = useUserStore()
     const userInfo = ref({})
 
@@ -18,13 +20,13 @@
             let response = await axiosIns.get(`/users/${route.params.id}`)
             userInfo.value = response.data
         } catch (error) {
-            alert("获取用户失败")
+            toasts.add("获取用户失败", toasts.Level.ERROR)
         }
     }
 
     function signOut() {
         user.clearToken()
-        alert("登出成功，即将跳转首页")
+        toasts.add("登出成功")
         router.push({ name: "home" })
     }
 

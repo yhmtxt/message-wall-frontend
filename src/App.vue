@@ -3,13 +3,16 @@
     import { RouterView, RouterLink } from "vue-router"
 
     import axiosIns from "@/axios"
-    import useUserStore from "./stores/user"
-    import Mask from "./components/Mask.vue"
-    import PopupArea from "./components/PopupArea.vue"
-    import FormArea from "./components/FormArea.vue"
+    import useToastsStore from "@/stores/toasts"
+    import useUserStore from "@/stores/user"
+    import Toasts from "@/components/Toasts.vue"
+    import Mask from "@/components/Mask.vue"
+    import PopupArea from "@/components/PopupArea.vue"
+    import FormArea from "@/components/FormArea.vue"
     import MultiLineInputBox from "@/components/MultiLineInputBox.vue"
-    import Button from "./components/Button.vue"
+    import Button from "@/components/Button.vue"
 
+    const toasts = useToastsStore()
     const user = useUserStore()
 
     user.loadToken()
@@ -30,26 +33,22 @@
         try {
             await axiosIns.post("/messages", { content: content.value })
             content.value = ""
-            alert("发送成功")
             hideLeavingMessagePopup()
+            toasts.add("发送成功")
         } catch (error) {
             if (error.status === 401) {
-                if (user.token === null) {
-                    alert("请先登录")
-                    router.push({ name: "signIn" })
-                } else {
-                    alert("登录失效，请重新登录")
-                    user.clearToken()
-                    router.push({ name: "signIn" })
-                }
+                toasts.add("登录失效，请重新登录", toasts.Level.ERROR)
+                user.clearToken()
+                router.push({ name: "signIn" })
             } else {
-                alert("发送失败，请稍后再试")
+                toasts.add("发送失败，请稍后再试", toasts.Level.ERROR)
             }
         }
     }
 </script>
 
 <template>
+    <Toasts />
     <Mask />
     <PopupArea
         id="leave-message-popup"

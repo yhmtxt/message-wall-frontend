@@ -1,8 +1,11 @@
 <script setup>
     import { onMounted, onUnmounted, ref, watch } from "vue"
 
+    import useToastsStore from "@/stores/toasts"
     import axiosIns from "@/axios"
     import Message from "@/components/Message.vue"
+
+    const toasts = useToastsStore
 
     const isLoading = ref(false)
     const messages = ref([])
@@ -17,7 +20,7 @@
             haveNextPage.value = result.data.have_next_page
             page.value++
         } catch (error) {
-            alert("加载失败，请稍后再试")
+            toasts.add("加载失败，请稍后再试", toasts.Level.ERROR)
         } finally {
             isLoading.value = false
         }

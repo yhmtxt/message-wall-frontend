@@ -3,11 +3,14 @@
     import { ref } from "vue"
     import { useRouter } from "vue-router"
 
+    import useToastsStore from "@/stores/toasts"
     import FormArea from "@/components/FormArea.vue"
     import InputBox from "@/components/InputBox.vue"
     import Button from "@/components/Button.vue"
 
     const router = useRouter()
+
+    const toasts = useToastsStore()
 
     const name = ref("")
     const password = ref("")
@@ -17,13 +20,13 @@
                 name: name.value,
                 password: password.value,
             })
-            alert("注册成功，即将跳转到登录页面")
+            toasts.add("注册成功，请登录")
             router.push({ name: "signIn" })
         } catch (error) {
             if (error.status === 409) {
-                alert("用户名已存在")
+                toasts.add("用户名已存在", toasts.Level.ERROR)
             } else {
-                alert("注册失败，请稍后再试")
+                toasts.add("注册失败，请稍后再试", toasts.Level.ERROR)
             }
         }
     }

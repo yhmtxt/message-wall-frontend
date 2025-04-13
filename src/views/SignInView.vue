@@ -3,6 +3,7 @@
     import { useRouter } from "vue-router"
 
     import axiosIns from "@/axios"
+    import useToastsStore from "@/stores/toasts"
     import useUserStore from "@/stores/user"
     import FormArea from "@/components/FormArea.vue"
     import InputBox from "@/components/InputBox.vue"
@@ -10,6 +11,7 @@
 
     const router = useRouter()
 
+    const toasts = useToastsStore()
     const user = useUserStore()
 
     const name = ref("")
@@ -22,10 +24,10 @@
         try {
             let response = await axiosIns.post("/sign_in", formData)
             user.setToken(response.data.access_token)
-            alert("登录成功，即将跳转到首页")
+            toasts.add("登录成功")
             router.push({ name: "home" })
         } catch (error) {
-            alert("登录失败，请稍后再试")
+            toasts.add("登录失败，请稍后再试", toasts.Level.ERROR)
         }
     }
 </script>
