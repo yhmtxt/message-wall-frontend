@@ -20,7 +20,16 @@
             let response = await axiosIns.get(`/users/${route.params.id}`)
             userInfo.value = response.data
         } catch (error) {
-            toasts.add("获取用户失败", toasts.Level.ERROR)
+            if (error.status === 404 || error.status === 422) {
+                router.replace({
+                    name: "notFound",
+                    params: { path: route.path.substring(1).split("/") },
+                    query: route.query,
+                    hash: route.hash,
+                })
+            } else {
+                toasts.add("获取用户失败", toasts.Level.ERROR)
+            }
         }
     }
 
