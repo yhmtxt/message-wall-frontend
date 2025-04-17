@@ -27,7 +27,11 @@
             toasts.add("登录成功")
             router.push({ name: "home" })
         } catch (error) {
-            toasts.add("登录失败，请稍后再试", toasts.Level.ERROR)
+            if (error.status === 401) {
+                toasts.add("用户名或密码不正确", toasts.Level.ERROR)
+            } else {
+                toasts.add("登录失败，请稍后再试", toasts.Level.ERROR)
+            }
         }
     }
 </script>
