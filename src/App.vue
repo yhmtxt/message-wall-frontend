@@ -50,11 +50,7 @@
 <template>
     <Toasts />
     <Mask />
-    <PopupArea
-        id="leave-message-popup"
-        style="margin-top: 20px"
-        :display="isLeavingMessagePopupDisplayed"
-    >
+    <PopupArea id="leave-message-popup" v-if="isLeavingMessagePopupDisplayed">
         <FormArea>
             <div class="item">
                 <h1>留言</h1>
@@ -95,6 +91,9 @@
 </template>
 
 <style scoped>
+    #leave-message-popup {
+        margin-top: 20px;
+    }
     #leave-message-popup h1 {
         margin: 0;
         text-align: center;

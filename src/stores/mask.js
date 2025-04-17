@@ -1,15 +1,18 @@
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { defineStore } from "pinia"
 
 const useMaskStore = defineStore("mask", () => {
-    const isDisplayed = ref(false)
-    function show() {
-        isDisplayed.value = true
+    const referenceCount = ref(0)
+    const isDisplayed = computed(() => Boolean(referenceCount.value))
+    function use() {
+        referenceCount.value++
     }
-    function hide() {
-        isDisplayed.value = false
+    function free() {
+        if (referenceCount.value > 0) {
+            referenceCount.value--
+        }
     }
-    return { isDisplayed, show, hide }
+    return { referenceCount, isDisplayed, use, free }
 })
 
 export default useMaskStore

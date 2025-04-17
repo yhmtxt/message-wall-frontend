@@ -1,24 +1,30 @@
 <script setup>
-    import { watchEffect } from "vue"
+    import { watchEffect, onMounted, onUnmounted } from "vue"
 
     import useMaskStore from "@/stores/mask"
 
     const mask = useMaskStore()
 
-    const { display } = defineProps({
-        display: Boolean,
-    })
+    // const { display } = defineProps({
+    //     display: Boolean,
+    // })
 
-    watchEffect(() => {
-        if (display) {
-            mask.show()
-        } else {
-            mask.hide()
-        }
+    // watchEffect(() => {
+    //     if (display) {
+    //         mask.show()
+    //     } else {
+    //         mask.hide()
+    //     }
+    // })
+    onMounted(() => {
+        mask.use()
+    })
+    onUnmounted(() => {
+        mask.free()
     })
 </script>
 <template>
-    <div class="popup-area" v-if="display">
+    <div class="popup-area">
         <slot></slot>
     </div>
 </template>
