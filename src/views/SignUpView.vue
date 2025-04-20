@@ -14,20 +14,25 @@
 
     const name = ref("")
     const password = ref("")
+    const confirmPassword = ref("")
     async function signUp() {
-        try {
-            await axiosIns.post("/sign_up", {
-                name: name.value,
-                password: password.value,
-            })
-            toasts.add("注册成功，请登录")
-            router.push({ name: "signIn" })
-        } catch (error) {
-            if (error.status === 409) {
-                toasts.add("用户名已存在", toasts.Level.ERROR)
-            } else {
-                toasts.add("注册失败，请稍后再试", toasts.Level.ERROR)
+        if (password.value === confirmPassword.value) {
+            try {
+                await axiosIns.post("/sign_up", {
+                    name: name.value,
+                    password: password.value,
+                })
+                toasts.add("注册成功，请登录")
+                router.push({ name: "signIn" })
+            } catch (error) {
+                if (error.status === 409) {
+                    toasts.add("用户名已存在", toasts.Level.ERROR)
+                } else {
+                    toasts.add("注册失败，请稍后再试", toasts.Level.ERROR)
+                }
             }
+        } else {
+            toasts.add("输入的密码不匹配", toasts.Level.ERROR)
         }
     }
 </script>
@@ -44,6 +49,10 @@
         <div class="item">
             <h2>密码</h2>
             <InputBox type="password" v-model="password" placeholder="请输入密码" />
+        </div>
+        <div class="item">
+            <h2>确认密码</h2>
+            <InputBox type="password" v-model="confirmPassword" placeholder="请再次输入密码" />
         </div>
         <div class="item">
             <Button value="注册" @click="signUp()" />
