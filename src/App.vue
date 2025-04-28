@@ -5,6 +5,7 @@
     import axiosIns from "@/axios"
     import useToastsStore from "@/stores/toasts"
     import useUserStore from "@/stores/user"
+    import usePopup from "./popup"
     import Toasts from "@/components/Toasts.vue"
     import Mask from "@/components/Mask.vue"
     import PopupArea from "@/components/PopupArea.vue"
@@ -17,15 +18,11 @@
 
     user.loadToken()
 
-    const isLeavingMessagePopupDisplayed = ref(false)
-
-    function showLeavingMessagePopup() {
-        isLeavingMessagePopupDisplayed.value = true
-    }
-
-    function hideLeavingMessagePopup() {
-        isLeavingMessagePopupDisplayed.value = false
-    }
+    const {
+        isDisplayed: isLeavingMessagePopupDisplayed,
+        show: showLeavingMessagePopup,
+        hide: hideLeavingMessagePopup,
+    } = usePopup()
 
     const content = ref("")
 
