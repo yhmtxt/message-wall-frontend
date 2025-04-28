@@ -1,5 +1,5 @@
 <script setup>
-    import { onMounted, onUnmounted, ref, watch } from "vue"
+    import { onMounted, onUnmounted, ref } from "vue"
 
     import useToastsStore from "@/stores/toasts"
     import axiosIns from "@/axios"

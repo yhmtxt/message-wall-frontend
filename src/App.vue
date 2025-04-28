@@ -37,6 +37,7 @@
             toasts.add("发送成功")
         } catch (error) {
             if (error.status === 401) {
+                hideLeavingMessagePopup()
                 toasts.add("登录失效，请重新登录", toasts.Level.ERROR)
                 user.clearToken()
                 router.push({ name: "signIn" })

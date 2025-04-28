@@ -1,21 +1,10 @@
 <script setup>
-    import { watchEffect, onMounted, onUnmounted } from "vue"
+    import { onMounted, onUnmounted } from "vue"
 
     import useMaskStore from "@/stores/mask"
 
     const mask = useMaskStore()
 
-    // const { display } = defineProps({
-    //     display: Boolean,
-    // })
-
-    // watchEffect(() => {
-    //     if (display) {
-    //         mask.show()
-    //     } else {
-    //         mask.hide()
-    //     }
-    // })
     onMounted(() => {
         mask.use()
     })
